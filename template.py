@@ -16,7 +16,7 @@ listOfFiles = [
     f'src/{projectName}/config/__init__.py',
     f'src/{projectName}/pipeline/__init__.py',
     f'src/{projectName}/entity/__init__.py',
-    f'src/{projectName}/constants__init__.py',
+    f'src/{projectName}/constants/__init__.py',
     'config/config.yaml',
     'dvc.yaml',
     'params.yaml',
