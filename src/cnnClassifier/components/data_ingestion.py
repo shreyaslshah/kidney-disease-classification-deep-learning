@@ -1,7 +1,10 @@
-import os, zipfile, gdown
+import os
+import zipfile
+import gdown
 from cnnClassifier import logger
 from cnnClassifier.entity.config_entity import DataIngestionConfig
 from cnnClassifier.utils.common import get_size
+
 
 class DataIngestion:
   def __init__(self, config: DataIngestionConfig):
@@ -39,5 +42,3 @@ class DataIngestion:
     os.makedirs(unzip_path, exist_ok=True)
     with zipfile.ZipFile(self.config.local_data_file, 'r') as zip_ref:
       zip_ref.extractall(unzip_path)
-
-      
