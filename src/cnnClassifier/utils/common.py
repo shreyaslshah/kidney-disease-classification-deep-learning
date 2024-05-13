@@ -10,10 +10,12 @@ from pathlib import Path
 from typing import Any
 import base64
 
+
 @ensure_annotations
 def get_size(path: Path) -> str:
-    size_in_kb = round(os.path.getsize(path)/1024)
-    return f"~ {size_in_kb} KB"
+  size_in_kb = round(os.path.getsize(path)/1024)
+  return f"~ {size_in_kb} KB"
+
 
 @ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
@@ -41,3 +43,10 @@ def save_json(path: Path, data: dict):
   with open(path, 'w') as f:
     json.dump(data, f, indent=4)
   logger.info(f'json file saved at: {path}')
+
+
+def decodeImage(imgstring, fileName):
+  imgdata = base64.b64decode(imgstring)
+  with open(fileName, 'wb') as f:
+    f.write(imgdata)
+    f.close()

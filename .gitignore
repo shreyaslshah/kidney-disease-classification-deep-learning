@@ -162,5 +162,4 @@ cython_debug/
 artifacts/
 mlruns
 .DS_Store
-.dvcignore
-dvc.lock
+

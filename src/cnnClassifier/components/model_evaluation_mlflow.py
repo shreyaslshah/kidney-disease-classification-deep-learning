@@ -11,6 +11,11 @@ from cnnClassifier.utils.common import read_yaml, create_directories, save_json
 class Evaluation:
   def __init__(self, config: EvaluationConfig):
     self.config = config
+    os.environ['MLFLOW_TRACKING_URI'] = os.getenv("MLFLOW_TRACKING_URI")
+    os.environ['MLFLOW_TRACKING_USERNAME'] = os.getenv(
+        "MLFLOW_TRACKING_USERNAME")
+    os.environ['MLFLOW_TRACKING_PASSWORD'] = os.getenv(
+        "MLFLOW_TRACKING_PASSWORD")
 
   def _valid_generator(self):
 
