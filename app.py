@@ -3,10 +3,11 @@ import os
 from flask_cors import CORS, cross_origin
 from cnnClassifier.utils.common import decodeImage
 from cnnClassifier.pipeline.prediction import PredictionPipeline
+from cnnClassifier import logger
 
-
-os.putenv('LANG', 'en_US.UTF-8')
-os.putenv('LC_ALL', 'en_US.UTF-8')
+# Set environment variables
+os.environ['LANG'] = 'en_US.UTF-8'
+os.environ['LC_ALL'] = 'en_US.UTF-8'
 
 app = Flask(__name__)
 CORS(app)
@@ -18,30 +19,44 @@ class ClientApp:
     self.classifier = PredictionPipeline(self.filename)
 
 
+clApp = ClientApp()
+
+
 @app.route("/", methods=['GET'])
 @cross_origin()
 def home():
-  return render_template('index.html')
+  try:
+    return render_template('index.html')
+  except Exception as e:
+    logger.error(f"Error rendering home page: {e}")
+    return str(e), 500
 
 
 @app.route("/train", methods=['GET', 'POST'])
 @cross_origin()
 def trainRoute():
-  os.system("python main.py")
-  # os.system("dvc repro")
-  return "Training done successfully!"
+  try:
+    os.system("python main.py")
+    # os.system("dvc repro")
+    return "Training done successfully!"
+  except Exception as e:
+    logger.error(f"Error during training: {e}")
+    return str(e), 500
 
 
 @app.route("/predict", methods=['POST'])
 @cross_origin()
 def predictRoute():
-  image = request.json['image']
-  decodeImage(image, clApp.filename)
-  result = clApp.classifier.predict()
-  return jsonify(result)
+  try:
+    image = request.json['image']
+    decodeImage(image, clApp.filename)
+    result = clApp.classifier.predict()
+    return jsonify(result)
+  except Exception as e:
+    logger.error(f"Error during prediction: {e}")
+    return str(e), 500
 
 
 if __name__ == "__main__":
-  clApp = ClientApp()
-
-  app.run(host='0.0.0.0', port=8080)  # for AWS
+  port = int(os.environ.get("PORT", 8080))
+  app.run(host='0.0.0.0', port=port)
